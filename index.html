@@ -10,17 +10,24 @@
 
 <header>
     <h1>Play Store Clone</h1>
+
     <input type="text" id="searchInput" placeholder="Uygulama ara..." onkeyup="searchApps()">
+
+    <div class="filters">
+        <button onclick="filterApps('all')">Tümü</button>
+        <button onclick="filterApps('Oyun')">Oyunlar</button>
+        <button onclick="filterApps('Uygulama')">Uygulamalar</button>
+    </div>
 </header>
 
 <div class="container">
     <div class="apps" id="apps"></div>
 </div>
 
-<!-- LOGIN -->
 <div id="loginPanel" class="login-panel">
     <div class="login-box">
         <h2>Giriş Yap</h2>
+
         <input type="text" id="username" placeholder="Kullanıcı adı">
         <input type="password" id="password" placeholder="Şifre">
 
@@ -29,12 +36,11 @@
     </div>
 </div>
 
-<!-- UPLOAD -->
 <div class="upload-box">
     <h2>Uygulama Yükle</h2>
 
     <input type="text" id="appName" placeholder="Uygulama adı">
-    <input type="text" id="appCategory" placeholder="Kategori">
+    <input type="text" id="appCategory" placeholder="Oyun / Uygulama">
     <input type="file" id="appFile">
 
     <button onclick="uploadApp()">Yükle</button>
