@@ -1,5 +1,6 @@
 let apps = JSON.parse(localStorage.getItem("apps")) || [];
 
+/* UYGULAMALARI GÖSTER */
 function renderApps() {
     let appsDiv = document.getElementById("apps");
     appsDiv.innerHTML = "";
@@ -9,15 +10,12 @@ function renderApps() {
         card.className = "card";
 
         card.innerHTML = `
-            <img src="https://picsum.photos/300?random=${Math.random()}">
-            <div class="card-content">
-                <h2>${app.name}</h2>
-                <p>${app.category}</p>
+            <h2>${app.name}</h2>
+            <p>${app.category}</p>
 
-                <a href="${app.file}" download="${app.fileName}">
-                    <button>İndir</button>
-                </a>
-            </div>
+            <a href="${app.file}" download="${app.fileName}">
+                <button>İndir</button>
+            </a>
         `;
 
         appsDiv.appendChild(card);
@@ -56,7 +54,7 @@ function filterApps(type) {
     });
 }
 
-/* LOGIN */
+/* KAYIT */
 function register() {
     let u = document.getElementById("username").value;
     let p = document.getElementById("password").value;
@@ -65,6 +63,7 @@ function register() {
     alert("Kayıt başarılı");
 }
 
+/* GİRİŞ */
 function login() {
     let u = document.getElementById("username").value;
     let p = document.getElementById("password").value;
