@@ -37,10 +37,6 @@ header input {
     cursor: pointer;
 }
 
-.filters button:hover {
-    background: #2563eb;
-}
-
 .container {
     padding: 20px;
 }
@@ -54,18 +50,16 @@ header input {
 .card {
     background: white;
     border-radius: 20px;
-    overflow: hidden;
+    padding: 15px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-.card img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
+.card h2 {
+    margin: 0;
 }
 
-.card-content {
-    padding: 15px;
+.card p {
+    color: gray;
 }
 
 button {
