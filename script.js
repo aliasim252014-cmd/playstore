@@ -1,15 +1,3 @@
-let apps = [
-    {
-        name: "Chat App",
-        category: "Sosyal",
-        rating: "4.8"
-    },
-    {
-        name: "Pixel Game",
-        category: "Oyun",
-        rating: "4.5"
-    }
-];
 
 function renderApps() {
     let appsDiv = document.getElementById('apps');
