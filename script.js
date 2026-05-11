@@ -26,7 +26,7 @@ function renderApps() {
 
 renderApps();
 
-// ARAMA
+/* ARAMA */
 function searchApps() {
     let input = document.getElementById("searchInput").value.toLowerCase();
     let cards = document.querySelectorAll(".card");
@@ -37,24 +37,40 @@ function searchApps() {
     });
 }
 
-// REGISTER
-function register() {
-    let user = document.getElementById("username").value;
-    let pass = document.getElementById("password").value;
+/* FİLTRE */
+function filterApps(type) {
+    let cards = document.querySelectorAll(".card");
 
-    localStorage.setItem(user, pass);
+    cards.forEach(card => {
+        let category = card.querySelector("p").innerText;
+
+        if(type === "all") {
+            card.style.display = "block";
+        } 
+        else if(category === type) {
+            card.style.display = "block";
+        } 
+        else {
+            card.style.display = "none";
+        }
+    });
+}
+
+/* LOGIN */
+function register() {
+    let u = document.getElementById("username").value;
+    let p = document.getElementById("password").value;
+
+    localStorage.setItem(u, p);
     alert("Kayıt başarılı");
 }
 
-// LOGIN
 function login() {
-    let user = document.getElementById("username").value;
-    let pass = document.getElementById("password").value;
+    let u = document.getElementById("username").value;
+    let p = document.getElementById("password").value;
 
-    let saved = localStorage.getItem(user);
-
-    if(saved === pass) {
-        localStorage.setItem("currentUser", user);
+    if(localStorage.getItem(u) === p) {
+        localStorage.setItem("currentUser", u);
         document.getElementById("loginPanel").style.display = "none";
         alert("Giriş başarılı");
     } else {
@@ -62,7 +78,7 @@ function login() {
     }
 }
 
-// UPLOAD
+/* UYGULAMA YÜKLE */
 function uploadApp() {
     if(!localStorage.getItem("currentUser")) {
         alert("Önce giriş yap");
@@ -75,14 +91,13 @@ function uploadApp() {
 
     let fileURL = URL.createObjectURL(file);
 
-    let newApp = {
+    apps.push({
         name,
         category,
         file: fileURL,
         fileName: file.name
-    };
+    });
 
-    apps.push(newApp);
     localStorage.setItem("apps", JSON.stringify(apps));
 
     renderApps();
