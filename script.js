@@ -1,12 +1,12 @@
 let apps = JSON.parse(localStorage.getItem("apps")) || [];
 
 function renderApps() {
-    let appsDiv = document.getElementById('apps');
-    appsDiv.innerHTML = '';
+    let appsDiv = document.getElementById("apps");
+    appsDiv.innerHTML = "";
 
     apps.forEach(app => {
-        let card = document.createElement('div');
-        card.className = 'card';
+        let card = document.createElement("div");
+        card.className = "card";
 
         card.innerHTML = `
             <img src="https://picsum.photos/300?random=${Math.random()}">
@@ -14,12 +14,9 @@ function renderApps() {
                 <h2>${app.name}</h2>
                 <p>${app.category}</p>
 
-                <div class="bottom">
-                    <span>⭐ ${app.rating}</span>
-                    <a href="${app.file}" download="${app.fileName}">
-                        <button>İndir</button>
-                    </a>
-                </div>
+                <a href="${app.file}" download="${app.fileName}">
+                    <button>İndir</button>
+                </a>
             </div>
         `;
 
@@ -29,31 +26,64 @@ function renderApps() {
 
 renderApps();
 
-function uploadApp() {
-    let appName = document.getElementById('appName').value;
-    let appCategory = document.getElementById('appCategory').value;
-    let file = document.getElementById('appFile').files[0];
+// ARAMA
+function searchApps() {
+    let input = document.getElementById("searchInput").value.toLowerCase();
+    let cards = document.querySelectorAll(".card");
 
-    if (!appName || !appCategory || !file) {
-        alert("Tüm alanları doldur");
+    cards.forEach(card => {
+        let title = card.querySelector("h2").innerText.toLowerCase();
+        card.style.display = title.includes(input) ? "block" : "none";
+    });
+}
+
+// REGISTER
+function register() {
+    let user = document.getElementById("username").value;
+    let pass = document.getElementById("password").value;
+
+    localStorage.setItem(user, pass);
+    alert("Kayıt başarılı");
+}
+
+// LOGIN
+function login() {
+    let user = document.getElementById("username").value;
+    let pass = document.getElementById("password").value;
+
+    let saved = localStorage.getItem(user);
+
+    if(saved === pass) {
+        localStorage.setItem("currentUser", user);
+        document.getElementById("loginPanel").style.display = "none";
+        alert("Giriş başarılı");
+    } else {
+        alert("Hatalı giriş");
+    }
+}
+
+// UPLOAD
+function uploadApp() {
+    if(!localStorage.getItem("currentUser")) {
+        alert("Önce giriş yap");
         return;
     }
+
+    let name = document.getElementById("appName").value;
+    let category = document.getElementById("appCategory").value;
+    let file = document.getElementById("appFile").files[0];
 
     let fileURL = URL.createObjectURL(file);
 
     let newApp = {
-        name: appName,
-        category: appCategory,
-        rating: "Yeni",
+        name,
+        category,
         file: fileURL,
         fileName: file.name
     };
 
     apps.push(newApp);
-
     localStorage.setItem("apps", JSON.stringify(apps));
 
     renderApps();
-
-    alert("Uygulama kaydedildi!");
 }
