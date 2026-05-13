@@ -1,6 +1,6 @@
 /* FIREBASE */
 
-const firebaseConfig = {
+  const firebaseConfig = {
     apiKey: "AIzaSyDQZkk9L2DoO7Aw-JXGYDt5Kq6UsaDFiLw",
     authDomain: "playstore-86762.firebaseapp.com",
     projectId: "playstore-86762",
@@ -8,7 +8,7 @@ const firebaseConfig = {
     messagingSenderId: "891958864313",
     appId: "1:891958864313:web:7019800551f6e4ffe76e68",
     measurementId: "G-05EH3JVCLQ"
-};
+  };
 
 firebase.initializeApp(firebaseConfig);
 
