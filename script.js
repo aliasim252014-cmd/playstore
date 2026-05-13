@@ -16,8 +16,6 @@ const db = firebase.firestore();
 
 const auth = firebase.auth();
 
-const storage = firebase.storage();
-
 /* UYGULAMALARI YÜKLE */
 
 function loadApps() {
@@ -65,7 +63,7 @@ function loadApps() {
 
 loadApps();
 
-/* KAYIT OL */
+/* KAYIT */
 
 function register() {
 
@@ -127,7 +125,7 @@ function login() {
 
 }
 
-/* DOSYA YÜKLE */
+/* UYGULAMA EKLE */
 
 function uploadApp() {
 
@@ -137,10 +135,10 @@ function uploadApp() {
     let category =
         document.getElementById("appCategory").value;
 
-    let file =
-        document.getElementById("appFile").files[0];
+    let link =
+        document.getElementById("appLink").value;
 
-    if(!name || !category || !file) {
+    if(!name || !category || !link) {
 
         alert("Tüm alanları doldur");
 
@@ -148,28 +146,17 @@ function uploadApp() {
 
     }
 
-    let storageRef =
-        storage.ref("apps/" + file.name);
+    db.collection("apps").add({
 
-    storageRef.put(file)
+        name: name,
+        category: category,
+        link: link
 
-    .then(snapshot => {
+    })
 
-        snapshot.ref.getDownloadURL()
+    .then(() => {
 
-        .then(downloadURL => {
-
-            db.collection("apps").add({
-
-                name: name,
-                category: category,
-                link: downloadURL
-
-            });
-
-            alert("Dosya yüklendi");
-
-        });
+        alert("Uygulama eklendi");
 
     });
 
