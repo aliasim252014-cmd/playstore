@@ -13,7 +13,10 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const db = firebase.firestore();
+
 const auth = firebase.auth();
+
+const storage = firebase.storage();
 
 /* UYGULAMALARI YÜKLE */
 
@@ -21,7 +24,8 @@ function loadApps() {
 
     db.collection("apps").onSnapshot(snapshot => {
 
-        let appsDiv = document.getElementById("apps");
+        let appsDiv =
+            document.getElementById("apps");
 
         appsDiv.innerHTML = "";
 
@@ -29,7 +33,8 @@ function loadApps() {
 
             let app = doc.data();
 
-            let card = document.createElement("div");
+            let card =
+                document.createElement("div");
 
             card.className = "card";
 
@@ -122,7 +127,7 @@ function login() {
 
 }
 
-/* UYGULAMA YÜKLE */
+/* DOSYA YÜKLE */
 
 function uploadApp() {
 
@@ -132,31 +137,39 @@ function uploadApp() {
     let category =
         document.getElementById("appCategory").value;
 
-    let link =
-        document.getElementById("appLink").value;
+    let file =
+        document.getElementById("appFile").files[0];
 
-    if(
-        !name ||
-        !category ||
-        !link
-    ) {
+    if(!name || !category || !file) {
 
         alert("Tüm alanları doldur");
 
         return;
+
     }
 
-    db.collection("apps").add({
+    let storageRef =
+        storage.ref("apps/" + file.name);
 
-        name: name,
-        category: category,
-        link: link
+    storageRef.put(file)
 
-    })
+    .then(snapshot => {
 
-    .then(() => {
+        snapshot.ref.getDownloadURL()
 
-        alert("Uygulama yüklendi");
+        .then(downloadURL => {
+
+            db.collection("apps").add({
+
+                name: name,
+                category: category,
+                link: downloadURL
+
+            });
+
+            alert("Dosya yüklendi");
+
+        });
 
     });
 
