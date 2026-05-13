@@ -1,103 +1,236 @@
-let apps = JSON.parse(localStorage.getItem("apps")) || [];
+/* FIREBASE */
 
-/* UYGULAMALARI GÖSTER */
-function renderApps() {
-    let appsDiv = document.getElementById("apps");
-    appsDiv.innerHTML = "";
+const firebaseConfig = {
+    apiKey: "AIzaSyDQZkk9L2DoO7Aw-JXGYDt5Kq6UsaDFiLw",
+    authDomain: "playstore-86762.firebaseapp.com",
+    projectId: "playstore-86762",
+    storageBucket: "playstore-86762.firebasestorage.app",
+    messagingSenderId: "891958864313",
+    appId: "1:891958864313:web:7019800551f6e4ffe76e68",
+    measurementId: "G-05EH3JVCLQ"
+};
 
-    apps.forEach(app => {
-        let card = document.createElement("div");
-        card.className = "card";
+firebase.initializeApp(firebaseConfig);
 
-        card.innerHTML = `
-            <h2>${app.name}</h2>
-            <p>${app.category}</p>
+const db = firebase.firestore();
+const auth = firebase.auth();
 
-            <a href="${app.file}" download="${app.fileName}">
-                <button>İndir</button>
-            </a>
-        `;
+/* UYGULAMALARI YÜKLE */
 
-        appsDiv.appendChild(card);
+function loadApps() {
+
+    db.collection("apps").onSnapshot(snapshot => {
+
+        let appsDiv = document.getElementById("apps");
+
+        appsDiv.innerHTML = "";
+
+        snapshot.forEach(doc => {
+
+            let app = doc.data();
+
+            let card = document.createElement("div");
+
+            card.className = "card";
+
+            card.innerHTML = `
+                <h2>${app.name}</h2>
+
+                <p>${app.category}</p>
+
+                <a href="${app.link}" target="_blank">
+                    <button>İndir</button>
+                </a>
+
+                <button
+                    class="delete-btn"
+                    onclick="deleteApp('${doc.id}')"
+                >
+                    Sil
+                </button>
+            `;
+
+            appsDiv.appendChild(card);
+
+        });
+
     });
+
 }
 
-renderApps();
+loadApps();
 
-/* ARAMA */
-function searchApps() {
-    let input = document.getElementById("searchInput").value.toLowerCase();
-    let cards = document.querySelectorAll(".card");
+/* KAYIT OL */
 
-    cards.forEach(card => {
-        let title = card.querySelector("h2").innerText.toLowerCase();
-        card.style.display = title.includes(input) ? "block" : "none";
-    });
-}
-
-/* FİLTRE */
-function filterApps(type) {
-    let cards = document.querySelectorAll(".card");
-
-    cards.forEach(card => {
-        let category = card.querySelector("p").innerText;
-
-        if(type === "all") {
-            card.style.display = "block";
-        } 
-        else if(category === type) {
-            card.style.display = "block";
-        } 
-        else {
-            card.style.display = "none";
-        }
-    });
-}
-
-/* KAYIT */
 function register() {
-    let u = document.getElementById("username").value;
-    let p = document.getElementById("password").value;
 
-    localStorage.setItem(u, p);
-    alert("Kayıt başarılı");
+    let email =
+        document.getElementById("email").value;
+
+    let password =
+        document.getElementById("password").value;
+
+    auth.createUserWithEmailAndPassword(
+        email,
+        password
+    )
+
+    .then(() => {
+
+        alert("Kayıt başarılı");
+
+    })
+
+    .catch(error => {
+
+        alert(error.message);
+
+    });
+
 }
 
 /* GİRİŞ */
-function login() {
-    let u = document.getElementById("username").value;
-    let p = document.getElementById("password").value;
 
-    if(localStorage.getItem(u) === p) {
-        localStorage.setItem("currentUser", u);
-        document.getElementById("loginPanel").style.display = "none";
+function login() {
+
+    let email =
+        document.getElementById("email").value;
+
+    let password =
+        document.getElementById("password").value;
+
+    auth.signInWithEmailAndPassword(
+        email,
+        password
+    )
+
+    .then(() => {
+
+        document.getElementById(
+            "loginPanel"
+        ).style.display = "none";
+
         alert("Giriş başarılı");
-    } else {
-        alert("Hatalı giriş");
-    }
+
+    })
+
+    .catch(error => {
+
+        alert(error.message);
+
+    });
+
 }
 
 /* UYGULAMA YÜKLE */
+
 function uploadApp() {
-    if(!localStorage.getItem("currentUser")) {
-        alert("Önce giriş yap");
+
+    let name =
+        document.getElementById("appName").value;
+
+    let category =
+        document.getElementById("appCategory").value;
+
+    let link =
+        document.getElementById("appLink").value;
+
+    if(
+        !name ||
+        !category ||
+        !link
+    ) {
+
+        alert("Tüm alanları doldur");
+
         return;
     }
 
-    let name = document.getElementById("appName").value;
-    let category = document.getElementById("appCategory").value;
-    let file = document.getElementById("appFile").files[0];
+    db.collection("apps").add({
 
-    let fileURL = URL.createObjectURL(file);
+        name: name,
+        category: category,
+        link: link
 
-    apps.push({
-        name,
-        category,
-        file: fileURL,
-        fileName: file.name
+    })
+
+    .then(() => {
+
+        alert("Uygulama yüklendi");
+
     });
 
-    localStorage.setItem("apps", JSON.stringify(apps));
+}
 
-    renderApps();
+/* SİL */
+
+function deleteApp(id) {
+
+    db.collection("apps")
+    .doc(id)
+    .delete();
+
+}
+
+/* ARAMA */
+
+function searchApps() {
+
+    let input =
+        document.getElementById(
+            "searchInput"
+        ).value.toLowerCase();
+
+    let cards =
+        document.querySelectorAll(".card");
+
+    cards.forEach(card => {
+
+        let title =
+            card.querySelector("h2")
+            .innerText
+            .toLowerCase();
+
+        card.style.display =
+            title.includes(input)
+            ? "block"
+            : "none";
+
+    });
+
+}
+
+/* FİLTRE */
+
+function filterApps(type) {
+
+    let cards =
+        document.querySelectorAll(".card");
+
+    cards.forEach(card => {
+
+        let category =
+            card.querySelector("p")
+            .innerText;
+
+        if(type === "all") {
+
+            card.style.display = "block";
+
+        }
+
+        else if(category === type) {
+
+            card.style.display = "block";
+
+        }
+
+        else {
+
+            card.style.display = "none";
+
+        }
+
+    });
+
 }
