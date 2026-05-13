@@ -3,15 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Code Market</title>
+<title>Play Store Clone</title>
+
 <link rel="stylesheet" href="style.css">
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 </head>
 <body>
 
 <header>
-    <h1>Code Market</h1>
+    <h1>Play Store Clone</h1>
 
-    <input type="text" id="searchInput" placeholder="Uygulama ara..." onkeyup="searchApps()">
+    <input
+        type="text"
+        id="searchInput"
+        placeholder="Uygulama ara..."
+        onkeyup="searchApps()"
+    >
 
     <div class="filters">
         <button onclick="filterApps('all')">Tümü</button>
@@ -26,28 +37,65 @@
 
 <!-- LOGIN -->
 <div id="loginPanel" class="login-panel">
+
     <div class="login-box">
+
         <h2>Giriş Yap</h2>
 
-        <input type="text" id="username" placeholder="Kullanıcı adı">
-        <input type="password" id="password" placeholder="Şifre">
+        <input
+            type="email"
+            id="email"
+            placeholder="E-Posta"
+        >
 
-        <button onclick="login()">Giriş Yap</button>
-        <button onclick="register()">Kayıt Ol</button>
+        <input
+            type="password"
+            id="password"
+            placeholder="Şifre"
+        >
+
+        <button onclick="login()">
+            Giriş Yap
+        </button>
+
+        <button onclick="register()">
+            Kayıt Ol
+        </button>
+
     </div>
+
 </div>
 
 <!-- UPLOAD -->
 <div class="upload-box">
+
     <h2>Uygulama Yükle</h2>
 
-    <input type="text" id="appName" placeholder="Uygulama adı">
-    <input type="text" id="appCategory" placeholder="Oyun / Uygulama">
-    <input type="file" id="appFile">
+    <input
+        type="text"
+        id="appName"
+        placeholder="Uygulama adı"
+    >
 
-    <button onclick="uploadApp()">Yükle</button>
+    <input
+        type="text"
+        id="appCategory"
+        placeholder="Oyun / Uygulama"
+    >
+
+    <input
+        type="text"
+        id="appLink"
+        placeholder="İndirme linki"
+    >
+
+    <button onclick="uploadApp()">
+        Yükle
+    </button>
+
 </div>
 
 <script src="script.js"></script>
+
 </body>
 </html>
