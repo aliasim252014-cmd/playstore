@@ -3,18 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Play Store Clone</title>
 
 <link rel="stylesheet" href="style.css">
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+
 </head>
 <body>
 
 <header>
+
     <h1>Play Store Clone</h1>
 
     <input
@@ -25,17 +32,31 @@
     >
 
     <div class="filters">
-        <button onclick="filterApps('all')">Tümü</button>
-        <button onclick="filterApps('Oyun')">Oyunlar</button>
-        <button onclick="filterApps('Uygulama')">Uygulamalar</button>
+
+        <button onclick="filterApps('all')">
+            Tümü
+        </button>
+
+        <button onclick="filterApps('Oyun')">
+            Oyunlar
+        </button>
+
+        <button onclick="filterApps('Uygulama')">
+            Uygulamalar
+        </button>
+
     </div>
+
 </header>
 
 <div class="container">
+
     <div class="apps" id="apps"></div>
+
 </div>
 
 <!-- LOGIN -->
+
 <div id="loginPanel" class="login-panel">
 
     <div class="login-box">
@@ -67,6 +88,7 @@
 </div>
 
 <!-- UPLOAD -->
+
 <div class="upload-box">
 
     <h2>Uygulama Yükle</h2>
@@ -84,9 +106,8 @@
     >
 
     <input
-        type="text"
-        id="appLink"
-        placeholder="İndirme linki"
+        type="file"
+        id="appFile"
     >
 
     <button onclick="uploadApp()">
